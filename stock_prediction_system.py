@@ -1070,18 +1070,24 @@ def api_explain(symbol):
     return jsonify(result)
 
 def load_config() -> Dict[str, any]:
-    """Load configuration from config.json"""
+    """Load configuration from config.json, or use defaults if not found."""
+    default_config = {
+        "symbols": ["AAPL", "GOOGL", "MSFT", "TSLA", "AMZN"],
+        "prediction_days": 5,
+        "api_host": "0.0.0.0",
+        "api_port": 5000
+    }
     try:
         with open('config.json', 'r') as f:
             config = json.load(f)
         logger.info("Configuration loaded from config.json")
         return config
     except FileNotFoundError:
-        logger.error("config.json not found. Please create it.")
-        sys.exit(1)
+        logger.warning("config.json not found. Using default configuration.")
+        return default_config
     except json.JSONDecodeError:
-        logger.error("Error decoding config.json. Please check its format.")
-        sys.exit(1)
+        logger.error("Error decoding config.json. Please check its format. Using default configuration.")
+        return default_config
 
 def main():
     """Main execution function"""
