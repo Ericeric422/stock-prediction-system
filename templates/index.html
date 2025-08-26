@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stock Prediction System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="app-container">
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="container">
+                <header>
+                    <h1>Stock Market Prediction</h1>
+                    <p class="tagline">AI-powered stock movement prediction using machine learning</p>
+                </header>
+
+                <section class="prediction-form">
+                    <div class="card">
+                        <h2><i class="fas fa-search-dollar"></i> Predict Stock Movement</h2>
+                        <p class="form-description">Enter a stock symbol to get a prediction for the next trading day's movement</p>
+                        
+                        <form id="predict-form">
+                            <div class="form-group">
+                                <div class="input-with-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                    <input type="text" id="symbol-input" 
+                                           placeholder="Enter stock symbol (e.g., AAPL, MSFT, GOOGL)" 
+                                           required
+                                           autocomplete="off"
+                                           autocapitalize="characters">
+                                    <div id="symbol-suggestions" class="suggestions hidden"></div>
+                                </div>
+                                <select id="model-select" class="btn-secondary" style="min-width: 180px;">
+                                    <option value="RandomForest" selected>RandomForest</option>
+                                    <option value="XGBoost">XGBoost</option>
+                                    <option value="LogisticRegression">LogisticRegression</option>
+                                    <option value="SVM">SVM</option>
+                                    <option value="Ensemble">Ensemble</option>
+                                </select>
+                                <button type="submit" class="btn-primary">
+                                    <i class="fas fa-arrow-right"></i> Predict
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Loading Spinner -->
+                <div id="loading-spinner" class="loading-spinner hidden">
+                    <div class="spinner"></div>
+                    <p>Analyzing market data...</p>
+                </div>
+                
+                <!-- Error Message -->
+                <div id="error-message" class="error-message hidden">
+                    <i class="fas fa-exclamation-circle"></i>
+                    <span id="error-text">An error occurred</span>
+                </div>
+
+                <!-- Results Section -->
+                <section id="result-container" class="results-container hidden">
+                    <div class="card">
+                        <div class="prediction-result">
+                            <div class="prediction-header">
+                                <span class="symbol">AAPL</span>
+                                <span class="prediction-date">Prediction for: <span id="prediction-date">--</span></span>
+                            </div>
+                            
+
+                            <div class="prediction-direction direction-up">
+                                <i class="fas fa-arrow-up"></i>
+                                <span>UP</span>
+                            </div>
+                            
+
+                            <div class="prediction-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Model:</span>
+                                    <span class="detail-value" id="model-name">RandomForest</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Confidence:</span>
+                                    <span class="detail-value" id="confidence">--%</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Last Updated:</span>
+                                    <span class="detail-value" id="last-updated">--</span>
+                                </div>
+                            </div>
+                            
+
+                            <div class="prediction-actions">
+                                <button id="explain-button" class="btn-secondary">
+                                    <i class="fas fa-question-circle"></i> Explain Prediction
+                                </button>
+                                <button id="refresh-button" class="btn-text" title="Refresh">
+                                    <i class="fas fa-sync-alt"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Explanation Container -->
+                    <div id="explanation-container" class="explanation-container hidden">
+                        <!-- Explanation content will be inserted here by JavaScript -->
+                    </div>
+                </section>
+                
+                <!-- Features Section -->
+                <section id="features-section" class="features-section hidden">
+                    <div class="card">
+                        <h2><i class="fas fa-chart-bar"></i> Key Features</h2>
+                        <p>These factors most influenced the prediction:</p>
+                        
+                        <div class="feature-list" id="feature-list">
+                            <!-- Feature items will be populated by JavaScript -->
+                        </div>
+                    </div>
+                </section>
+                
+                <footer>
+                    <p>Stock Market Prediction System &copy; 2023 | Powered by Machine Learning</p>
+                    <p class="disclaimer">
+                        <i class="fas fa-exclamation-triangle"></i> 
+                        This tool is for educational purposes only and should not be considered financial advice. 
+                        Predictions are based on historical data and may not be accurate.
+                    </p>
+                    <p>Powered by AI <i class="fas fa-robot"></i></p>
+                </footer>
+            </div>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>

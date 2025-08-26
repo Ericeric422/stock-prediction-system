@@ -1,0 +1,11 @@
+numpy
+pandas
+yfinance
+requests
+scikit-learn
+xgboost
+tensorflow
+matplotlib
+seaborn
+Flask
+shap
