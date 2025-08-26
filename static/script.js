@@ -343,6 +343,80 @@ document.addEventListener('DOMContentLoaded', () => {
             directionIcon.className = 'fas fa-arrow-down';
             directionText.textContent = 'DOWN';
         }
+
+        // Render chart if chart data is available
+        try {
+            if (data.chart && Array.isArray(data.chart.labels)) {
+                const ctx = document.getElementById('price-chart').getContext('2d');
+                // Dispose existing chart if re-rendering
+                if (window.__priceChart) {
+                    window.__priceChart.destroy();
+                }
+                window.__priceChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: data.chart.labels,
+                        datasets: [
+                            {
+                                label: 'Close',
+                                data: data.chart.close || [],
+                                borderColor: 'rgba(52, 152, 219, 1)',
+                                backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                                borderWidth: 2,
+                                pointRadius: 0,
+                                tension: 0.2,
+                                spanGaps: true
+                            },
+                            {
+                                label: 'SMA 20',
+                                data: data.chart.sma20 || [],
+                                borderColor: 'rgba(46, 204, 113, 1)',
+                                backgroundColor: 'rgba(46, 204, 113, 0.1)',
+                                borderWidth: 1.5,
+                                pointRadius: 0,
+                                tension: 0.2,
+                                spanGaps: true
+                            },
+                            {
+                                label: 'SMA 50',
+                                data: data.chart.sma50 || [],
+                                borderColor: 'rgba(155, 89, 182, 1)',
+                                backgroundColor: 'rgba(155, 89, 182, 0.1)',
+                                borderWidth: 1.5,
+                                pointRadius: 0,
+                                tension: 0.2,
+                                spanGaps: true
+                            }
+                        ]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        interaction: { mode: 'index', intersect: false },
+                        plugins: {
+                            legend: { display: true },
+                            tooltip: { enabled: true }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    maxTicksLimit: 8,
+                                    autoSkip: true
+                                }
+                            },
+                            y: {
+                                beginAtZero: false,
+                                ticks: {
+                                    callback: (v) => typeof v === 'number' ? v.toFixed(2) : v
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+        } catch (e) {
+            console.warn('Chart render skipped:', e);
+        }
     }
 
     // Show error message

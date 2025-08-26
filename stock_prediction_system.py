@@ -760,6 +760,37 @@ class ProductionPredictor:
             except Exception:
                 pass
 
+            # Prepare compact chart data (last ~180 trading days)
+            try:
+                chart_df = data_with_features.tail(180).copy()
+                # Ensure index is datetime for label formatting
+                if not isinstance(chart_df.index, pd.DatetimeIndex):
+                    try:
+                        chart_df.index = pd.to_datetime(chart_df.index)
+                    except Exception:
+                        pass
+
+                labels = [
+                    (idx.strftime('%Y-%m-%d') if hasattr(idx, 'strftime') else str(idx))
+                    for idx in chart_df.index
+                ]
+                # Use None for NaNs to keep array lengths consistent for Chart.js
+                def _series(values):
+                    return [
+                        (None if pd.isna(v) else float(v))
+                        for v in values
+                    ]
+
+                chart_payload = {
+                    'labels': labels,
+                    'close': _series(chart_df.get('Close', pd.Series(index=chart_df.index)).values),
+                    'sma20': _series(chart_df.get('SMA_20', pd.Series(index=chart_df.index)).values),
+                    'sma50': _series(chart_df.get('SMA_50', pd.Series(index=chart_df.index)).values),
+                }
+            except Exception as _chart_e:
+                logger.debug(f"Chart data prep failed for {symbol}: {_chart_e}")
+                chart_payload = None
+
             return {
                 'symbol': symbol,
                 'prediction': prediction,
@@ -768,7 +799,8 @@ class ProductionPredictor:
                 'confidence': abs(prob - 0.5) * 2,
                 'timestamp': datetime.now().isoformat(),
                 'model_used': model_name,
-                'company_name': company_name
+                'company_name': company_name,
+                'chart': chart_payload
             }
             
         except Exception as e:
