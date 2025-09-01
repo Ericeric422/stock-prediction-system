@@ -46,29 +46,15 @@ from sklearn.feature_selection import SelectKBest, mutual_info_classif
 import xgboost as xgb
 
 # Deep Learning
-try:
-    import tensorflow as tf
-    from tensorflow import keras
-    from keras.models import Sequential, Model
-    from keras.layers import LSTM, Dense, Dropout, Conv1D, MaxPooling1D, Flatten, Input, MultiHeadAttention, LayerNormalization
-    from keras.optimizers import Adam
-    from keras.callbacks import EarlyStopping
-    TENSORFLOW_AVAILABLE = True
-    print("TensorFlow available - Deep learning models enabled")
-except ImportError:
-    try:
-        # Fallback for older TensorFlow versions
-        import tensorflow as tf
-        from tensorflow.keras.models import Sequential, Model
-        from tensorflow.keras.layers import LSTM, Dense, Dropout, Conv1D, MaxPooling1D, Flatten, Input
-        from tensorflow.keras.optimizers import Adam
-        from tensorflow.keras.callbacks import EarlyStopping
-        TENSORFLOW_AVAILABLE = True
-        print("TensorFlow (legacy imports) available - Deep learning models enabled")
-    except ImportError:
-        TENSORFLOW_AVAILABLE = False
-        print("TensorFlow not available. Deep learning models will be skipped.")
-        print("To enable deep learning: pip install tensorflow")
+import tensorflow as tf
+from tensorflow import keras
+from keras.models import Sequential, Model
+from keras.layers import LSTM, Dense, Dropout, Conv1D, MaxPooling1D, Flatten, Input, MultiHeadAttention, LayerNormalization
+from keras.optimizers import Adam
+from keras.callbacks import EarlyStopping
+TENSORFLOW_AVAILABLE = True
+print("TensorFlow available - Deep learning models enabled")
+
 
 # Explainability
 try:
